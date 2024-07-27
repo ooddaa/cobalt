@@ -1,0 +1,3 @@
+defmodule Cobalt.Mailer do
+  use Swoosh.Mailer, otp_app: :cobalt
+end
