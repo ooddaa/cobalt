@@ -1,3 +1,9 @@
+.container {
+  & p:last-of-type {
+    color: yellow;
+  }
+}
+
 .red {
     color: red;
 }
@@ -8,5 +14,9 @@
     &--blue {
       color: blue;
     }
+}
+
+.pink-color {
+  color: pink;
 }
 

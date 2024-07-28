@@ -1,5 +1,5 @@
 const esbuild = require("esbuild");
-const { sassPlugin } = require("esbuild-sass-plugin")
+const { sassPlugin, postcssModules } = require("esbuild-sass-plugin")
 const { appendFileSync, writeFileSync, readdirSync } = require('node:fs');
 const path = require("path")
 
@@ -37,7 +37,17 @@ const deploy = args.includes('--deploy');
 const loader = {};
 
 const plugins = [
-  sassPlugin()
+  sassPlugin({
+    filter: /\.module\.scss$/,
+    transform: postcssModules({
+      getJSON: function(cssFilename, json, outputFileName) {
+        // save classes into JSON so they can be used in .html.heex templates
+        const jsonName = path.basename(cssFilename, ".module.scss") + ".styles.json"
+        const jsonPathname = path.resolve(path.dirname(cssFilename), jsonName)
+        writeFileSync(jsonPathname, JSON.stringify(json))
+      }
+    })
+  })
 ];
 
 // Define esbuild options
