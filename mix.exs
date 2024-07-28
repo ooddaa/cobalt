@@ -38,7 +38,7 @@ defmodule Cobalt.MixProject do
       # TODO bump on release to {:phoenix_live_view, "~> 1.0.0"},
       {:phoenix_live_view, "~> 1.0.0-rc.1", override: true},
       {:floki, ">= 0.30.0", only: :test},
-      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
+      # {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.5"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
@@ -59,11 +59,9 @@ defmodule Cobalt.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "assets.setup", "assets.build"],
-      "assets.setup": ["esbuild.install --if-missing"],
-      "assets.build": ["esbuild cobalt"],
+      setup: ["deps.get", "cmd --cd assets npm install"], 
       "assets.deploy": [
-        "esbuild cobalt --minify",
+        "cmd --cd assets node build.js --deploy", 
         "phx.digest"
       ]
     ]

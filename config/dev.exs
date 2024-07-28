@@ -15,7 +15,7 @@ config :cobalt, CobaltWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "jMAlho+dUuXdlwshFF40R9Ye+L1l/5BSfXhyAqlZLRGxA8jTBWjb0ILp4sU46wPp",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:cobalt, ~w(--sourcemap=inline --watch)]}
+    node: ["build.js", "--watch", cd: Path.expand("../assets", __DIR__)]
   ]
 
 # ## SSL Support
