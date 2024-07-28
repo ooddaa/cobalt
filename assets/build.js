@@ -1,35 +1,34 @@
 const esbuild = require("esbuild");
 const { sassPlugin } = require("esbuild-sass-plugin")
-const { appendFileSync, writeFileSync } = require('node:fs');
+const { appendFileSync, writeFileSync, readdirSync } = require('node:fs');
+const path = require("path")
 
 // finds all .scss files in ../../lib/cobalt_web/live/
 // and appends its paths as static imports to app.js
 // so that styles are available to the client
 // and we can reference them in .html.heex templates
-// TODO: write .scss finder 
+//
 // I have a nasty feeling that all this is done by 
 // esbuild, but couldn't find a working solution yet
-const scssFiles = [
-  "../../lib/cobalt_web/live/chat/chat.module.scss", 
-  "../../lib/cobalt_web/live/main/main.module.scss", 
-]
+const lib = "../lib/cobalt_web/live"
+const pathname = path.resolve(__dirname, lib)
+const files = readdirSync(pathname, {withFileTypes: true, recursive: true})
 
-// TODO: possibly this file can be created by Elixir build?
-const styles = "scss/styles.js"
+// TODO: possibly this file can be created by Elixir build script?
+const styles = path.resolve(__dirname, "./scss/styles.js")
 
 // empty file contents
-// TODO: create if doesn't exist 
 writeFileSync(styles, ``);
 
 // append imports
-scssFiles.forEach(async (path) => {
+files.forEach(async ({parentPath, name}) => {
   try {
-    appendFileSync(styles, `import "${path}";\n`);
+    if (name.endsWith(".scss")) 
+      appendFileSync(styles, `import "${path.join(parentPath, name)}";\n`);
   } catch (err) {
     /* Handle the error */
   } 
 })
-
 
 const args = process.argv.slice(2);
 const watch = args.includes('--watch');
