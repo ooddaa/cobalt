@@ -12,19 +12,15 @@ defmodule CobaltWeb.ChatLive do
     {:ok, socket}
   end
 
-
   def assign_styles(socket) do
-    styles =
-      case Utils.get_styles(__DIR__) do
-        {:ok, styles} ->
-          styles
+    case Utils.get_styles(__DIR__) do
+      {:ok, styles} ->
+        assign(socket, :styles, styles)
 
-          {:error, err, dir} ->
-          IO.inspect(err, label: "#{@file}: couldn't get the styles file in #{dir}")
-          %{}
-      end
-
-    assign(socket, :styles, styles)
+      {:error, err, dir} ->
+        IO.inspect(err, label: "#{@file}: couldn't get the styles file in #{dir}")
+        socket
+    end
   end
 
   def handle_event("new-slug", _params, socket) do
