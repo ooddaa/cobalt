@@ -2,17 +2,29 @@ defmodule CobaltWeb.ChatLive do
   use CobaltWeb, :live_view
   require Logger
 
+  @file __ENV__.file
   def mount(_param, _session, socket) do
-    # TODO: find a way to reolve "chat.styles.json" in get_styles 
-    json = "/Users/admin/Desktop/code/cobalt/lib/cobalt_web/live/chat/chat.styles.json"
-    {:ok, styles} = Utils.get_styles(json)
-
     socket =
       socket
       |> assign(:slug, "no-slug")
-      |> assign(:styles, styles)
+      |> assign_styles()
 
     {:ok, socket}
+  end
+
+
+  def assign_styles(socket) do
+    styles =
+      case Utils.get_styles(__DIR__) do
+        {:ok, styles} ->
+          styles
+
+          {:error, err, dir} ->
+          IO.inspect(err, label: "#{@file}: couldn't get the styles file in #{dir}")
+          %{}
+      end
+
+    assign(socket, :styles, styles)
   end
 
   def handle_event("new-slug", _params, socket) do

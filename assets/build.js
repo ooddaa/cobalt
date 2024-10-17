@@ -40,8 +40,11 @@ const plugins = [
   sassPlugin({
     filter: /\.module\.scss$/,
     transform: postcssModules({
+      localsConvention: 'camelCaseOnly',
       getJSON: function(cssFilename, json, outputFileName) {
-        // save classes into JSON so they can be used in .html.heex templates
+        // classnames are locally scoped so a user-friendly camelCased classnames
+        // aliases are saved into module_name.styles.json file 
+        // so they can be used in .html.heex templates
         const jsonName = path.basename(cssFilename, ".module.scss") + ".styles.json"
         const jsonPathname = path.resolve(path.dirname(cssFilename), jsonName)
         writeFileSync(jsonPathname, JSON.stringify(json))

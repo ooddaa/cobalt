@@ -1,7 +1,7 @@
 .container {
-  & p:last-of-type {
-    color: yellow;
-  }
+    & p:last-of-type {
+        color: yellow;
+    }
 }
 
 .red {
@@ -12,11 +12,11 @@
     color: green;
 
     &--blue {
-      color: blue;
+        color: blue;
     }
 }
 
 .pink-color {
-  color: pink;
+    color: pink;
 }
 
