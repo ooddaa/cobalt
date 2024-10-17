@@ -5,7 +5,7 @@ defmodule Cobalt.MixProject do
     [
       app: :cobalt,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.17.3",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -58,9 +58,9 @@ defmodule Cobalt.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "cmd --cd assets npm install"], 
+      setup: ["deps.get", "cmd --cd assets npm install"],
       "assets.deploy": [
-        "cmd --cd assets node build.js --deploy", 
+        "cmd --cd assets node build.js --deploy",
         "phx.digest"
       ]
     ]
